@@ -1,0 +1,73 @@
+#include <iostream>
+using namespace std;
+
+// Node definition
+class Node {
+public:
+    int index;
+    int data;
+    Node* next;
+
+    Node(int idx, int val) : index(idx), data(val), next(nullptr) {}
+};
+
+// Function to insert a new node into a sorted linked list
+void insertSorted(Node** headRef, int idx, int newData) {
+    Node* newNode = new Node(idx, newData);
+    if (*headRef == nullptr || newData < (*headRef)->data) {
+        newNode->next = *headRef;
+        *headRef = newNode;
+    } else {
+        Node* current = *headRef;
+        while (current->next != nullptr && current->next->data < newData) {
+            current = current->next;
+        }
+        newNode->next = current->next;
+        current->next = newNode;
+    }
+}
+
+// Function to print the list
+void printList(Node* node) {
+    while (node != nullptr) {
+        cout << "[" << node->index << ": " << node->data << "] ";
+        node = node->next;
+    }
+    cout << endl;
+}
+
+// Function to calculate the length of the linked list
+int lengthOfList(Node* head) {
+    int length = 0;
+    Node* current = head;
+    while (current != nullptr) {
+        length++;
+        current = current->next;
+    }
+    return length;
+}
+
+int main() {
+    Node* head = nullptr;
+    int idx = 0;
+    int newData;
+    char choice;
+
+    do {
+        cout << "Enter a number to insert into the sorted linked list: ";
+        cin >> newData;
+        insertSorted(&head, idx++, newData);
+
+        cout << "Do you want to insert another number? (y/n): ";
+        cin >> choice;
+    } while (choice == 'y' || choice == 'Y');
+
+    // Print the sorted linked list
+    cout << "Sorted list: ";
+    printList(head);
+
+    // Print the length of the linked list
+    cout << "Length of the linked list: " << lengthOfList(head) << endl;
+
+    return 0;
+}

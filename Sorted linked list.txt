@@ -1,0 +1,57 @@
+#include <iostream>
+using namespace std;
+
+// Node definition
+class Node {
+public:
+    int data;
+    Node* next;
+
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+// Function to insert a new node into a sorted linked list
+void insertSorted(Node** headRef, int newData) {
+    Node* newNode = new Node(newData);
+    if (*headRef == nullptr || newData < (*headRef)->data) {
+        newNode->next = *headRef;
+        *headRef = newNode;
+    } else {
+        Node* current = *headRef;
+        while (current->next != nullptr && current->next->data < newData) {
+            current = current->next;
+        }
+        newNode->next = current->next;
+        current->next = newNode;
+    }
+}
+
+// Function to print the list
+void printList(Node* node) {
+    while (node != nullptr) {
+        cout << node->data << " ";
+        node = node->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    Node* head = nullptr;
+    int newData;
+    char choice;
+
+    do {
+        cout << "Enter a number to insert into the sorted linked list: ";
+        cin >> newData;
+        insertSorted(&head, newData);
+
+        cout << "Do you want to insert another number? (y/n): ";
+        cin >> choice;
+    } while (choice == 'y' || choice == 'Y');
+
+    // Print the sorted linked list
+    cout << "Sorted list: ";
+    printList(head);
+
+    return 0;
+}
